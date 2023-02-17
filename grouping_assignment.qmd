@@ -61,11 +61,11 @@ Take a moment to look at the various categories included for each disbursement.
 
 Without doing any analysis yet, what are three questions you might try to answer using this dataset? Write your narrative answers in the spaces below.
 
-1.  
+1.  Which company was the highest payed by the Trump Campaign? 
 
-2.  
+2.  What was the mean average payments of the Trump campaign? 
 
-3.  
+3.  Which month had the most payments? 
 
 ## Coding Assignment Questions
 
@@ -82,10 +82,9 @@ How much was spent in the 2017 vs. 2018 reporting year?
 ```{r}
 
 
-
-
-
-
+payments %>% 
+  group_by(disbursement_year) %>% 
+  summarise(disbursement_amount = mean(disbursement_amount, na.rm = TRUE))
 
 ```
 
@@ -94,9 +93,9 @@ Tally the total overall disbursement amounts for each month (distinguishing betw
 ```{r}
 
 
-
-
-
+payments %>% 
+  group_by(disbursement_month) %>% 
+  summarise(disbursement_amount = mean(disbursement_amount, na.rm = TRUE)) %>% arrange(desc(disbursement_amount))
 
 ```
 
@@ -105,7 +104,9 @@ Which recipient (recipient_name) was paid the most in the 2020 election cycle?
 ```{r}
 
 
-
+payments %>% 
+  group_by(recipient_name) %>% 
+  summarise(disbursement_amount = mean(disbursement_amount, na.rm = TRUE)) %>% arrange(desc(disbursement_amount))
 
 
 
@@ -116,7 +117,8 @@ Look at what this recipient was paid for. What service or good (see the "disburs
 
 ```{r}
 
-
+payments %>% 
+filter(recipient_name == "KASOWITZ, BENSON, TORRESS & FRIEDMAN" ) %>% arrange(desc(disbursement_amount))
 
 
 
@@ -126,6 +128,10 @@ Look at what this recipient was paid for. What service or good (see the "disburs
 What's the most common category overall (see "disbursement_description") the campaign spent money on?
 
 ```{r}
+
+payments %>% 
+  group_by(disbursement_description) %>% 
+  summarise(disbursement_amount = mean(disbursement_amount, na.rm = TRUE)) %>%  arrange(desc(disbursement_amount))
 
 
 
@@ -138,9 +144,13 @@ Who were the 5 biggest recipients of campaign spending on "LEGAL CONSULTING"..?
 
 ```{r}
 
+payments2 <- payments %>% filter (disbursement_description=="LEGAL CONSULTING") %>% group_by(disbursement_description, recipient_name) %>% arrange(desc(disbursement_amount))
 
+payments2<-payments %>% filter( disbursement_description=="LEGAL CONSULTING") %>%
+   group_by(recipient_name) %>% 
+  summarise (disbursement_amount = mean(disbursement_amount, na.rm = TRUE))
 
-
+payments2 %>% arrange(desc(disbursement_amount))
 
 
 
@@ -153,6 +163,9 @@ Who are the top 5 individuals (vs. organization) were paid by the campaign commi
 
 
 
+payments%>% 
+  group_by(recipient_name) %>% 
+  summarise(disbursement_amount = mean(disbursement_amount, na.rm = TRUE))%>% arrange(desc(disbursement_amount))
 
 
 
@@ -164,9 +177,9 @@ For the indvidual who was paid the most, which payment category (disbursement_de
 
 ```{r}
 
-
-
-
+payments%>% 
+  group_by(recipient_name, disbursement_description) %>% 
+  summarise(disbursement_amount = mean(disbursement_amount, na.rm = TRUE))%>% arrange(desc(disbursement_amount))
 
 
 
