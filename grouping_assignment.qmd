@@ -167,8 +167,13 @@ payments%>%
   group_by(recipient_name) %>% 
   summarise(disbursement_amount = mean(disbursement_amount, na.rm = TRUE))%>% arrange(desc(disbursement_amount))
 
+payments%>% 
+  group_by(recipient_name, disbursement_description) %>% 
+  summarise(disbursement_amount = mean(disbursement_amount, na.rm = TRUE))%>% arrange(desc(disbursement_amount))
 
 
+  git config --global user.email "you@example.com"
+  git config --global user.name "Your Name"
 
 ```
 
@@ -179,8 +184,6 @@ For the indvidual who was paid the most, which payment category (disbursement_de
 
 payments%>% 
   group_by(recipient_name, disbursement_description) %>% 
-  summarise(disbursement_amount = mean(disbursement_amount, na.rm = TRUE))%>% arrange(desc(disbursement_amount))
-
-
+  summarise(disbursement_amount = mean(disbursement_amount, na.rm = TRUE))%>% arrange(desc(disbursement_amount)) %>% 
 
 ```
